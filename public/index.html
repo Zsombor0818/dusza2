@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kincskereső robot</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1><span class="logo" aria-hidden="true">◆</span>Kincskereső robot</h1>
+    <div id="userBox" hidden>
+      <span>Bejelentkezve: <strong id="userName"></strong></span>
+      <button id="logoutBtn" type="button">Kijelentkezés</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="appView">
+      <nav role="tablist" aria-label="Menü">
+        <button role="tab" data-tab="gameTab" aria-selected="true">Játék</button>
+        <button role="tab" data-tab="editorTab" aria-selected="false">Térképszerkesztő</button>
+        <button role="tab" data-tab="boardTab" aria-selected="false">Ranglista</button>
+      </nav>
+
+      <div id="gameTab" role="tabpanel" class="tab">
+        <div class="columns">
+          <div class="card">
+            <label for="gameMap">Térkép</label>
+            <select id="gameMap"></select>
+            <div id="gameGrid" class="grid" role="img" aria-label="A térkép és a robot"></div>
+            <dl class="stats">
+              <dt>Arany</dt><dd id="statGold">0</dd>
+              <dt>Lépés</dt><dd id="statSteps">0</dd>
+              <dt>Sor</dt><dd id="statLine">-</dd>
+            </dl>
+            <p class="legend">
+              <span class="cell robot">▶</span> robot
+              <span class="cell gold">◆</span> arany
+              <span class="cell wall"></span> fal
+              <span class="cell empty unexplored"></span> felfedezetlen
+            </p>
+          </div>
+          <div class="card">
+            <label for="code">Program (MineScript)</label>
+            <div class="editor">
+              <textarea id="code" spellcheck="false" rows="16">set count to 0
+set fal to isThere 1
+set megy to not fal
+while megy
+  set arany to isThere 2
+  if arany
+    step forward 1
+    mine here
+    set count to count + 1
+  else
+    step forward 1
+  set fal to isThere 1
+  set megy to not fal
+print count</textarea>
+              <ol id="codeView" class="code-view" aria-label="Programsorok"></ol>
+            </div>
+            <div class="buttons">
+              <label class="button">Importálás<input type="file" id="codeImport" accept=".txt,text/plain" hidden></label>
+              <button id="codeExport" type="button">Exportálás</button>
+              <button id="checkBtn" type="button">Ellenőrzés</button>
+              <button id="runBtn" type="button" class="primary">Futtatás</button>
+              <button id="stopBtn" type="button" disabled>Leállítás</button>
+              <label for="speed">Sebesség</label>
+              <select id="speed">
+                <option value="800">Lassú</option>
+                <option value="300" selected>Közepes</option>
+                <option value="80">Gyors</option>
+              </select>
+            </div>
+            <p id="gameMsg" class="msg" role="status"></p>
+            <h3>Konzol</h3>
+            <pre id="console" role="log" aria-live="polite"></pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="editorTab" role="tabpanel" class="tab" hidden>
+        <div class="columns">
+          <div class="card">
+            <label for="editSelect">Szerkesztett térkép</label>
+            <select id="editSelect"></select>
+            <label for="editName">Név</label>
+            <input id="editName" maxlength="50">
+            <div class="row">
+              <div>
+                <label for="editRows">Sorok</label>
+                <input id="editRows" type="number" min="1" max="15" value="5">
+              </div>
+              <div>
+                <label for="editCols">Oszlopok</label>
+                <input id="editCols" type="number" min="1" max="15" value="5">
+              </div>
+            </div>
+            <button id="resizeBtn" type="button">Méret alkalmazása</button>
+            <fieldset>
+              <legend>Elhelyezendő elem</legend>
+              <label><input type="radio" name="tool" value="." checked> Üres kamra</label>
+              <label><input type="radio" name="tool" value="@"> Arany ◆</label>
+              <label><input type="radio" name="tool" value="#"> Fal</label>
+              <label><input type="radio" name="tool" value=">"> Robot kelet felé ▶</label>
+              <label><input type="radio" name="tool" value="^"> Robot észak felé ▲</label>
+              <label><input type="radio" name="tool" value="<"> Robot nyugat felé ◀</label>
+              <label><input type="radio" name="tool" value="v"> Robot dél felé ▼</label>
+            </fieldset>
+          </div>
+          <div class="card">
+            <div id="editGrid" class="grid"></div>
+            <div class="buttons">
+              <button id="saveMapBtn" type="button" class="primary">Mentés</button>
+              <button id="saveNewMapBtn" type="button">Mentés újként</button>
+              <button id="deleteMapBtn" type="button">Törlés</button>
+              <label class="button">Importálás<input type="file" id="mapImport" accept=".txt,text/plain" hidden></label>
+              <button id="mapExport" type="button">Exportálás</button>
+            </div>
+            <p id="editMsg" class="msg" role="status"></p>
+          </div>
+        </div>
+      </div>
+
+      <div id="boardTab" role="tabpanel" class="tab" hidden>
+        <div class="card">
+          <label for="boardMap">Térkép</label>
+          <select id="boardMap"></select>
+          <table>
+            <caption>Legjobb eredmények (több arany, majd kevesebb lépés)</caption>
+            <thead>
+              <tr><th scope="col">Hely</th><th scope="col">Felhasználó</th><th scope="col">Arany</th><th scope="col">Lépés</th><th scope="col">Időpont</th></tr>
+            </thead>
+            <tbody id="boardBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="map.js"></script>
+  <script src="minescript.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

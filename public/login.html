@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bejelentkezés</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-page">
+  <main class="auth">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">◆</span>
+      <h1>Kincskereső robot</h1>
+      <p>Programozd a robotot, és gyűjtsd össze az aranyat!</p>
+    </div>
+
+    <div class="card">
+      <nav role="tablist" aria-label="Bejelentkezés vagy regisztráció">
+        <button role="tab" id="loginTab" aria-controls="loginForm" aria-selected="true">Bejelentkezés</button>
+        <button role="tab" id="registerTab" aria-controls="registerForm" aria-selected="false">Regisztráció</button>
+      </nav>
+
+      <form id="loginForm" role="tabpanel" aria-labelledby="loginTab">
+        <label for="loginUser">Felhasználónév</label>
+        <input id="loginUser" autocomplete="username" required>
+        <label for="loginPass">Jelszó</label>
+        <input id="loginPass" type="password" autocomplete="current-password" required>
+        <button type="submit" class="primary">Belépés</button>
+      </form>
+
+      <form id="registerForm" role="tabpanel" aria-labelledby="registerTab" hidden>
+        <label for="regUser">Felhasználónév</label>
+        <input id="regUser" autocomplete="username" required>
+        <label for="regPass">Jelszó</label>
+        <input id="regPass" type="password" autocomplete="new-password" required>
+        <label for="regPass2">Jelszó újra</label>
+        <input id="regPass2" type="password" autocomplete="new-password" required>
+        <button type="submit" class="primary">Regisztrálok</button>
+      </form>
+
+      <p id="authMsg" class="msg" role="alert"></p>
+    </div>
+  </main>
+
+  <script src="login.js"></script>
+</body>
+</html>
