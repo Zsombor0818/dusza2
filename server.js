@@ -52,7 +52,7 @@ function validMap(req, res) {
   }
 }
 
-app.post('/api/register', async (req, res) => {
+/* app.post('/api/register', async (req, res) => {
   const { username, password } = req.body;
   if (!/^[A-Za-z0-9_]{3,20}$/.test(username || '')) {
     return res.status(400).json({ error: 'A felhasználónév 3-20 karakter (betű, szám, _) lehet.' });
@@ -64,7 +64,7 @@ app.post('/api/register', async (req, res) => {
   if (rows.length) return res.status(400).json({ error: 'Ez a felhasználónév már foglalt.' });
   await db.query('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashPassword(password)]);
   res.json({ ok: true });
-});
+}); */
 
 app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
