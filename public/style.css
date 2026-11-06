@@ -69,7 +69,7 @@ header {
 }
 
 header::after {
-  content: "FIELD / LAB";
+  content: "";
   position: absolute;
   right: clamp(1.2rem, 5vw, 5rem);
   top: 1rem;
@@ -168,7 +168,7 @@ a:hover { color: #d1ff8c; }
 }
 
 .auth-page::before {
-  content: "01";
+  content: "";
   position: absolute;
   left: 3vw;
   bottom: -7vw;
