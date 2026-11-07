@@ -4,41 +4,106 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Bejelentkezés</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body class="auth-page">
   <main class="auth">
-    <div class="brand">
-      <span class="logo" aria-hidden="true">◆</span>
-      <h1>Kincskereső robot</h1>
-      <p>Programozd a robotot, és gyűjtsd össze az aranyat!</p>
-    </div>
+    <section class="treasure-scene">
+      <div class="scene-title">
+        <span>⚒</span>
+        <div>
+          <h2>Kincskereső robot</h2>
+          <p>Segíts neki megtalálni az aranyat!</p>
+        </div>
+      </div>
 
-    <div class="card">
-      <nav role="tablist" aria-label="Bejelentkezés vagy regisztráció">
-        <button role="tab" id="loginTab" aria-controls="loginForm" aria-selected="true">Bejelentkezés</button>
-        <button role="tab" id="registerTab" aria-controls="registerForm" aria-selected="false">Regisztráció</button>
-      </nav>
+      <div class="robot-area">
+        <div class="moon"></div>
 
-      <form id="loginForm" role="tabpanel" aria-labelledby="loginTab">
-        <label for="loginUser">Felhasználónév</label>
-        <input id="loginUser" autocomplete="username" required>
-        <label for="loginPass">Jelszó</label>
-        <input id="loginPass" type="password" autocomplete="current-password" required>
-        <button type="submit" class="primary">Belépés</button>
-      </form>
+        <div class="stars">
+          <span>✦</span>
+          <span>✧</span>
+          <span>✦</span>
+          <span>✧</span>
+          <span>✦</span>
+        </div>
 
-      <form id="registerForm" role="tabpanel" aria-labelledby="registerTab" hidden>
-        <label for="regUser">Felhasználónév</label>
-        <input id="regUser" autocomplete="username" required>
-        <label for="regPass">Jelszó</label>
-        <input id="regPass" type="password" autocomplete="new-password" required>
-        <label for="regPass2">Jelszó újra</label>
-        <input id="regPass2" type="password" autocomplete="new-password" required>
-        <button type="submit" class="primary">Regisztrálok</button>
-      </form>
+        <div class="coins">
+          <div class="coin coin-1">₿</div>
+          <div class="coin coin-2">◆</div>
+          <div class="coin coin-3">₿</div>
+          <div class="coin coin-4">◆</div>
+        </div>
 
-      <p id="authMsg" class="msg" role="alert"></p>
+        <div class="robot">
+          <div class="antenna"><span></span></div>
+          <div class="robot-head">
+            <div class="ear left-ear"></div>
+            <div class="ear right-ear"></div>
+            <div class="eyes"><span></span><span></span></div>
+            <div class="robot-screen"><span class="scan"></span></div>
+            <div class="mouth"><span></span><span></span><span></span></div>
+          </div>
+          <div class="robot-neck"></div>
+          <div class="robot-body">
+            <div class="chest-light"></div>
+            <div class="control-panel"><span></span><span></span><span></span></div>
+          </div>
+          <div class="robot-arm left-arm"><div class="hand"></div></div>
+          <div class="robot-arm right-arm"><div class="hand"></div></div>
+          <div class="robot-leg left-leg"></div>
+          <div class="robot-leg right-leg"></div>
+        </div>
+
+        <div class="ground"></div>
+
+        <div class="treasure">
+          <div class="chest-lid"></div>
+          <div class="chest-body"><div class="lock">◆</div></div>
+          <div class="gold-glow"></div>
+          <div class="gold"><span>◆</span><span>₿</span><span>◆</span></div>
+        </div>
+      </div>
+
+      <div class="scene-message">
+        <span class="message-dot"></span>
+        <p>A kincs ott vár, ahol a kaland kezdődik...</p>
+      </div>
+    </section>
+
+    <div class="auth-content">
+      <div class="brand">
+        <span class="logo" aria-hidden="true">◆</span>
+        <h1>Kincskereső robot</h1>
+        <p>Programozd a robotot, és gyűjtsd össze az aranyat!</p>
+      </div>
+
+      <div class="card">
+        <nav role="tablist" aria-label="Bejelentkezés vagy regisztráció">
+          <button type="button" role="tab" id="loginTab" aria-controls="loginForm" aria-selected="true">Bejelentkezés</button>
+          <button type="button" role="tab" id="registerTab" aria-controls="registerForm" aria-selected="false">Regisztráció</button>
+        </nav>
+
+        <form id="loginForm" role="tabpanel" aria-labelledby="loginTab">
+          <label for="loginUser">Felhasználónév</label>
+          <input id="loginUser" autocomplete="username" required>
+          <label for="loginPass">Jelszó</label>
+          <input id="loginPass" type="password" autocomplete="current-password" required>
+          <button type="submit" class="primary">Belépés</button>
+        </form>
+
+        <form id="registerForm" role="tabpanel" aria-labelledby="registerTab" hidden>
+          <label for="regUser">Felhasználónév</label>
+          <input id="regUser" autocomplete="username" required>
+          <label for="regPass">Jelszó</label>
+          <input id="regPass" type="password" autocomplete="new-password" required>
+          <label for="regPass2">Jelszó újra</label>
+          <input id="regPass2" type="password" autocomplete="new-password" required>
+          <button type="submit" class="primary">Regisztrálok</button>
+        </form>
+
+        <p id="authMsg" class="msg" role="alert"></p>
+      </div>
     </div>
   </main>
 

@@ -52,7 +52,18 @@ function validMap(req, res) {
   }
 }
 
-/* app.post('/api/register', async (req, res) => {
+app.post('/api/login', async (req, res) => {
+  const { username, password } = req.body;
+  const [rows] = await db.query('SELECT * FROM users WHERE username = ?', [username || '']);
+  if (!rows.length || !checkPassword(password || '', rows[0].password)) {
+    return res.status(401).json({ error: 'Hibás felhasználónév vagy jelszó.' });
+  }
+  const token = crypto.randomBytes(24).toString('hex');
+  sessions.set(token, { id: rows[0].id, username: rows[0].username });
+  res.json({ token, username: rows[0].username });
+});
+
+app.post('/api/register', async (req, res) => {
   const { username, password } = req.body;
   if (!/^[A-Za-z0-9_]{3,20}$/.test(username || '')) {
     return res.status(400).json({ error: 'A felhasználónév 3-20 karakter (betű, szám, _) lehet.' });
@@ -64,18 +75,8 @@ function validMap(req, res) {
   if (rows.length) return res.status(400).json({ error: 'Ez a felhasználónév már foglalt.' });
   await db.query('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashPassword(password)]);
   res.json({ ok: true });
-}); */
+}); 
 
-app.post('/api/login', async (req, res) => {
-  const { username, password } = req.body;
-  const [rows] = await db.query('SELECT * FROM users WHERE username = ?', [username || '']);
-  if (!rows.length || !checkPassword(password || '', rows[0].password)) {
-    return res.status(401).json({ error: 'Hibás felhasználónév vagy jelszó.' });
-  }
-  const token = crypto.randomBytes(24).toString('hex');
-  sessions.set(token, { id: rows[0].id, username: rows[0].username });
-  res.json({ token, username: rows[0].username });
-});
 
 app.post('/api/logout', auth, (req, res) => {
   sessions.delete(req.headers.authorization.replace('Bearer ', ''));

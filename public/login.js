@@ -1,5 +1,23 @@
 const $ = id => document.getElementById(id);
 
+const robot = document.querySelector('.robot');
+const robotArea = document.querySelector('.robot-area');
+
+if (robot && robotArea) {
+  robotArea.addEventListener('mousemove', event => {
+    const rect = robotArea.getBoundingClientRect();
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateY = ((event.clientX - rect.left - centerX) / centerX) * 4;
+    const rotateX = ((centerY - (event.clientY - rect.top)) / centerY) * 3;
+    robot.style.transform = `translateX(-50%) translateY(-7px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  });
+
+  robotArea.addEventListener('mouseleave', () => {
+    robot.style.transform = 'translateX(-50%) translateY(0) rotateX(0) rotateY(0)';
+  });
+}
+
 async function post(url, body) {
   const res = await fetch(url, {
     method: 'POST',
@@ -11,47 +29,59 @@ async function post(url, body) {
   return data;
 }
 
-function message(text, type) {
+function message(text, type = '') {
   $('authMsg').textContent = text;
-  $('authMsg').className = 'msg ' + (type || '');
+  $('authMsg').className = 'msg ' + type;
 }
 
-function showForm(name) {
-  const login = name === 'login';
-  $('loginTab').setAttribute('aria-selected', login);
-  $('registerTab').setAttribute('aria-selected', !login);
-  $('loginForm').hidden = !login;
-  $('registerForm').hidden = login;
+const loginTab = $('loginTab');
+const registerTab = $('registerTab');
+const loginForm = $('loginForm');
+const registerForm = $('registerForm');
+
+function switchForm(type) {
+  const isLogin = type === 'login';
+  loginForm.hidden = !isLogin;
+  registerForm.hidden = isLogin;
+  loginTab.setAttribute('aria-selected', String(isLogin));
+  registerTab.setAttribute('aria-selected', String(!isLogin));
   message('');
-  $(login ? 'loginUser' : 'regUser').focus();
+  $(isLogin ? 'loginUser' : 'regUser').focus();
 }
 
-$('loginTab').onclick = () => showForm('login');
-$('registerTab').onclick = () => showForm('register');
+loginTab.addEventListener('click', () => switchForm('login'));
+registerTab.addEventListener('click', () => switchForm('register'));
 
-$('loginForm').onsubmit = async e => {
+loginForm.addEventListener('submit', async e => {
   e.preventDefault();
   try {
-    const data = await post('/api/login', { username: $('loginUser').value, password: $('loginPass').value });
+    const data = await post('/api/login', {
+      username: $('loginUser').value.trim(),
+      password: $('loginPass').value
+    });
+    if (!data.token) throw new Error('A szerver nem küldött tokent.');
     localStorage.setItem('token', data.token);
     location.href = '/';
   } catch (err) {
     message(err.message, 'error');
   }
-};
+});
 
-$('registerForm').onsubmit = async e => {
+registerForm.addEventListener('submit', async e => {
   e.preventDefault();
-  if ($('regPass').value !== $('regPass2').value) return message('A két jelszó nem egyezik.', 'error');
+  const username = $('regUser').value.trim();
+  const password = $('regPass').value;
+  if (password !== $('regPass2').value) {
+    return message('A két jelszó nem egyezik.', 'error');
+  }
   try {
-    await post('/api/register', { username: $('regUser').value, password: $('regPass').value });
-    const username = $('regUser').value;
-    $('registerForm').reset();
-    showForm('login');
+    await post('/api/register', { username, password });
+    registerForm.reset();
+    switchForm('login');
     $('loginUser').value = username;
     $('loginPass').focus();
     message('Sikeres regisztráció, most már bejelentkezhetsz.', 'ok');
   } catch (err) {
     message(err.message, 'error');
   }
-};
+});
