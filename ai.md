@@ -3,7 +3,6 @@
 ## Használt AI-eszközök és modellek
 
 | Eszköz | Modell | Verzió / dátum |
-|---|---|---|
 | Claude Code | Opus 5.5 | 2026. november |
 
 ## Mire használtuk az AI-t, és mekkora részben
